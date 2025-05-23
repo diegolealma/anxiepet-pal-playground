@@ -29,6 +29,8 @@ const AnxiePet = () => {
   const [coins, setCoins] = useState(150);
   const [gems, setGems] = useState(5);
   const [lastInteraction, setLastInteraction] = useState(Date.now());
+  const [showAdModal, setShowAdModal] = useState(false);
+  const [adType, setAdType] = useState<'therapy' | 'phrases'>('therapy');
 
   const phrases = {
     happy: [
@@ -65,18 +67,33 @@ const AnxiePet = () => {
       "Claro, me dá carinho agora. Mas e quando eu colapsar às 3 da manhã?",
       "A ansiedade é meu cardio, obrigado por perguntar.",
       "Modo padrão ativado: existindo sem grandes expectativas."
+    ],
+    tired: [
+      "Zzz... Sonhando com energia infinita...",
+      "Dormindo... Mas ainda ansioso nos sonhos.",
+      "Preciso dormir... Mas e se algo importante acontecer?",
+      "Cochilando... Recarregando minha ansiedade.",
+      "Dormir é a única fuga da realidade... Por enquanto."
     ]
   };
 
   const getMood = (): Mood => {
+    // Energy override
+    if (stats.energy < 20) return { type: 'neutral', emoji: '😴' };
+    
     if (stats.happiness > 80) return { type: 'happy', emoji: '😊' };
     if (stats.anxiety > 70) return { type: 'anxious', emoji: '😰' };
     if (stats.happiness < 30) return { type: 'sad', emoji: '😢' };
-    if (stats.energy < 20) return { type: 'philosophical', emoji: '🤔' };
+    if (stats.energy < 40) return { type: 'philosophical', emoji: '🤔' };
     return { type: 'neutral', emoji: '😐' };
   };
 
   const getRandomPhrase = (moodType: string) => {
+    // Special case for very low energy
+    if (stats.energy < 20) {
+      return phrases.tired[Math.floor(Math.random() * phrases.tired.length)];
+    }
+    
     const moodPhrases = phrases[moodType as keyof typeof phrases] || phrases.neutral;
     return moodPhrases[Math.floor(Math.random() * moodPhrases.length)];
   };
@@ -85,6 +102,30 @@ const AnxiePet = () => {
     const newMood = getMood();
     setMood(newMood);
     setCurrentPhrase(getRandomPhrase(newMood.type));
+  };
+
+  const simulateAd = (type: 'therapy' | 'phrases') => {
+    setAdType(type);
+    setShowAdModal(true);
+    
+    // Simulate ad completion after 3 seconds
+    setTimeout(() => {
+      setShowAdModal(false);
+      
+      if (type === 'therapy') {
+        // Premium therapy gives better bonuses
+        setStats(prev => ({
+          happiness: Math.min(100, prev.happiness + 20),
+          anxiety: Math.max(0, prev.anxiety - 15),
+          energy: Math.min(100, prev.energy + 10)
+        }));
+        setCoins(prev => prev + 10);
+      } else {
+        // Special phrases unlock
+        setGems(prev => prev + 1);
+        setCurrentPhrase("Frases especiais desbloqueadas! Agora posso ser ainda mais específico na minha ansiedade!");
+      }
+    }, 3000);
   };
 
   const handleCare = () => {
@@ -119,20 +160,35 @@ const AnxiePet = () => {
     }
   };
 
-  // Sistema de tempo - pet fica mais ansioso com o tempo
+  // Sistema de tempo automatico - mudanças constantes nos níveis
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       const timeSinceLastInteraction = now - lastInteraction;
       
-      if (timeSinceLastInteraction > 30000) { // 30 segundos
-        setStats(prev => ({
-          happiness: Math.max(0, prev.happiness - 1),
-          anxiety: Math.min(100, prev.anxiety + 2),
-          energy: Math.max(0, prev.energy - 1)
-        }));
-      }
-    }, 10000); // Check every 10 seconds
+      setStats(prev => {
+        let newStats = { ...prev };
+        
+        // Declínio natural com o tempo
+        newStats.happiness = Math.max(0, prev.happiness - 0.5);
+        newStats.energy = Math.max(0, prev.energy - 0.8);
+        newStats.anxiety = Math.min(100, prev.anxiety + 0.3);
+        
+        // Acelera declínio se não houver interação
+        if (timeSinceLastInteraction > 30000) { // 30 segundos
+          newStats.happiness = Math.max(0, newStats.happiness - 1);
+          newStats.anxiety = Math.min(100, newStats.anxiety + 1.5);
+          newStats.energy = Math.max(0, newStats.energy - 1);
+        }
+        
+        // Flutuações aleatórias para ansiedade
+        if (Math.random() < 0.1) { // 10% chance
+          newStats.anxiety = Math.min(100, newStats.anxiety + Math.random() * 5);
+        }
+        
+        return newStats;
+      });
+    }, 5000); // Check every 5 seconds
 
     return () => clearInterval(interval);
   }, [lastInteraction]);
@@ -150,6 +206,25 @@ const AnxiePet = () => {
   return (
     <div className="min-h-screen anxie-gradient flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 space-y-6">
+        {/* Ad Modal */}
+        {showAdModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 text-center">
+              <div className="text-4xl mb-4">📺</div>
+              <h3 className="text-lg font-bold mb-2">
+                {adType === 'therapy' ? 'Terapia Premium' : 'Frases Especiais'}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Assistindo anúncio... 
+                {adType === 'therapy' ? 'Desbloqueando sessão de terapia!' : 'Desbloqueando novas frases!'}
+              </p>
+              <div className="flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -199,7 +274,7 @@ const AnxiePet = () => {
 
         {/* Pet Avatar */}
         <div className="flex justify-center py-8">
-          <PetAvatar mood={mood} onClick={handleCare} />
+          <PetAvatar mood={mood} onClick={handleCare} energy={stats.energy} />
         </div>
 
         {/* Phrase Display */}
@@ -231,7 +306,10 @@ const AnxiePet = () => {
           <div className="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-2xl">
             <div className="flex items-center justify-between">
               <span className="font-medium text-purple-800">⭐ Terapia Premium ⭐</span>
-              <button className="text-sm bg-purple-500 text-white px-3 py-1 rounded-full">
+              <button 
+                onClick={() => simulateAd('therapy')}
+                className="text-sm bg-purple-500 text-white px-3 py-1 rounded-full hover:bg-purple-600 transition-colors"
+              >
                 Ver Anúncio
               </button>
             </div>
@@ -241,7 +319,10 @@ const AnxiePet = () => {
             <div className="flex items-center justify-between">
               <span className="font-medium text-emerald-800">✨ Frases Especiais ✨</span>
               <div className="flex items-center space-x-2">
-                <button className="text-sm bg-emerald-500 text-white px-3 py-1 rounded-full">
+                <button 
+                  onClick={() => simulateAd('phrases')}
+                  className="text-sm bg-emerald-500 text-white px-3 py-1 rounded-full hover:bg-emerald-600 transition-colors"
+                >
                   Ver Anúncio
                 </button>
                 <div className="flex items-center space-x-1">

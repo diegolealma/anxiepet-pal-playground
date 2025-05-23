@@ -9,10 +9,16 @@ interface Mood {
 interface PetAvatarProps {
   mood: Mood;
   onClick: () => void;
+  energy: number; // Add energy prop
 }
 
-const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
+const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick, energy }) => {
   const getAnimationClass = () => {
+    // If energy is very low, override with tired animation
+    if (energy < 20) {
+      return 'pet-tired';
+    }
+    
     switch (mood.type) {
       case 'happy':
         return 'pet-happy';
@@ -26,6 +32,27 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
   };
 
   const getPetEmoji = () => {
+    // If energy is very low, show tired face regardless of mood
+    if (energy < 20) {
+      return '😴';
+    }
+    
+    // If energy is low but not critical, show tired version of current mood
+    if (energy < 40) {
+      switch (mood.type) {
+        case 'happy':
+          return '😊';
+        case 'anxious':
+          return '😰';
+        case 'sad':
+          return '😢';
+        case 'philosophical':
+          return '🤔';
+        default:
+          return '😑'; // tired neutral
+      }
+    }
+    
     switch (mood.type) {
       case 'happy':
         return '😊';
@@ -51,14 +78,23 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
         transition-all duration-300 hover:scale-110
         pulse-glow
         ${getAnimationClass()}
+        ${energy < 20 ? 'opacity-75' : ''}
       `}
     >
       {/* Pet Face */}
       <div className="text-6xl relative">
         {getPetEmoji()}
         
+        {/* Energy indicators */}
+        {energy < 20 && (
+          <>
+            <div className="absolute -top-2 -left-2 text-xs">💤</div>
+            <div className="absolute -top-1 -right-3 text-xs">😴</div>
+          </>
+        )}
+        
         {/* Floating particles for anxiety */}
-        {mood.type === 'anxious' && (
+        {mood.type === 'anxious' && energy >= 20 && (
           <>
             <div className="absolute -top-2 -left-2 text-xs floating animation-delay-100">💭</div>
             <div className="absolute -top-1 -right-3 text-xs floating animation-delay-300">😵‍💫</div>
@@ -67,7 +103,7 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
         )}
         
         {/* Hearts for happiness */}
-        {mood.type === 'happy' && (
+        {mood.type === 'happy' && energy >= 20 && (
           <>
             <div className="absolute -top-3 -left-1 text-sm floating animation-delay-200">💖</div>
             <div className="absolute -top-2 -right-2 text-sm floating animation-delay-400">✨</div>
@@ -76,7 +112,7 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
         )}
 
         {/* Tears for sadness */}
-        {mood.type === 'sad' && (
+        {mood.type === 'sad' && energy >= 20 && (
           <>
             <div className="absolute top-8 left-6 text-xs">💧</div>
             <div className="absolute top-8 right-6 text-xs">💧</div>
@@ -89,7 +125,7 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick }) => {
       
       {/* Click indicator */}
       <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-white bg-black/50 px-2 py-1 rounded-full opacity-75">
-        Toque para carinho
+        {energy < 20 ? 'Está dormindo...' : 'Toque para carinho'}
       </div>
     </div>
   );
