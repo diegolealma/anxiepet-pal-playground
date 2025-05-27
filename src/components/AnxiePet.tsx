@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { Heart, Zap, Frown, Coins, Diamond, Share2, Copy } from 'lucide-react';
+import { Heart, Zap, Frown, Coins, Diamond, Share2, Copy, Utensils, GamepadIcon, Sparkles } from 'lucide-react';
 import PetAvatar from './PetAvatar';
 import StatusBar from './StatusBar';
 import ActionButton from './ActionButton';
@@ -9,6 +10,9 @@ interface PetStats {
   happiness: number;
   anxiety: number;
   energy: number;
+  hunger: number;
+  cleanliness: number;
+  boredom: number;
 }
 
 interface Mood {
@@ -20,7 +24,10 @@ const AnxiePet = () => {
   const [stats, setStats] = useState<PetStats>({
     happiness: 75,
     anxiety: 30,
-    energy: 85
+    energy: 85,
+    hunger: 60,
+    cleanliness: 70,
+    boredom: 40
   });
   
   const [currentPhrase, setCurrentPhrase] = useState('');
@@ -73,6 +80,16 @@ const AnxiePet = () => {
       "Recarregando... 2% de bateria social restante.",
       "Modo hibernate: igual Windows, pode não voltar direito.",
       "Cansaço nível: preciso de café para tomar café."
+    ],
+    refusal: [
+      "Não. Simples assim. Não vou explicar por quê.",
+      "Tô passando bem, obrigado. Volta quando eu não tiver aqui.",
+      "Hoje não. Amanhã também não. Semana que vem a gente vê.",
+      "Me recuso a colaborar com essa palhaçada chamada vida.",
+      "Não tô com vontade. E não, não vou mudar de ideia.",
+      "Passar bem é uma escolha. Escolho não.",
+      "Não mesmo. Tenho direito de ser difícil.",
+      "Prefiro minha miséria atual, obrigado."
     ]
   };
 
@@ -114,6 +131,7 @@ const AnxiePet = () => {
       if (type === 'therapy') {
         // Premium therapy gives better bonuses
         setStats(prev => ({
+          ...prev,
           happiness: Math.min(100, prev.happiness + 20),
           anxiety: Math.max(0, prev.anxiety - 15),
           energy: Math.min(100, prev.energy + 10)
@@ -129,6 +147,7 @@ const AnxiePet = () => {
 
   const handleCare = () => {
     setStats(prev => ({
+      ...prev,
       happiness: Math.min(100, prev.happiness + 10),
       anxiety: Math.max(0, prev.anxiety - 5),
       energy: Math.max(0, prev.energy - 5)
@@ -137,26 +156,62 @@ const AnxiePet = () => {
     setLastInteraction(Date.now());
   };
 
+  const handleFeed = () => {
+    // 30% chance of refusal even when hungry
+    if (Math.random() < 0.3) {
+      setCurrentPhrase(phrases.refusal[Math.floor(Math.random() * phrases.refusal.length)]);
+      return;
+    }
+
+    if (coins >= 5) {
+      setStats(prev => ({
+        ...prev,
+        happiness: Math.min(100, prev.happiness + 5),
+        anxiety: Math.max(0, prev.anxiety - 2),
+        energy: Math.min(100, prev.energy + 15),
+        hunger: Math.max(0, prev.hunger - 30)
+      }));
+      setCoins(prev => prev - 5);
+      setCurrentPhrase("Tá, comi. Mas não significa que tô grato. Era só fome mesmo.");
+      setLastInteraction(Date.now());
+    }
+  };
+
   const handlePlay = () => {
+    // 25% chance of refusal
+    if (Math.random() < 0.25) {
+      setCurrentPhrase("Não tô com vontade de fingir que isso é divertido hoje.");
+      return;
+    }
+
     setStats(prev => ({
-      happiness: Math.min(100, prev.happiness + 5),
-      anxiety: Math.max(0, prev.anxiety - 10),
-      energy: Math.max(0, prev.energy - 15)
+      ...prev,
+      happiness: Math.min(100, prev.happiness + 15),
+      anxiety: Math.max(0, prev.anxiety - 8),
+      energy: Math.max(0, prev.energy - 20),
+      boredom: Math.max(0, prev.boredom - 40)
     }));
     setCoins(prev => prev + 3);
+    setCurrentPhrase("Ok, foi meio divertido. Mas não se acostuma, tá?");
     setLastInteraction(Date.now());
   };
 
-  const handleFeed = () => {
-    if (coins >= 5) {
-      setStats(prev => ({
-        happiness: Math.min(100, prev.happiness + 15),
-        anxiety: Math.max(0, prev.anxiety - 3),
-        energy: Math.min(100, prev.energy + 20)
-      }));
-      setCoins(prev => prev - 5);
-      setLastInteraction(Date.now());
+  const handleClean = () => {
+    // 20% chance of refusal
+    if (Math.random() < 0.2) {
+      setCurrentPhrase("Gosto da minha bagunça existencial, obrigado.");
+      return;
     }
+
+    setStats(prev => ({
+      ...prev,
+      happiness: Math.min(100, prev.happiness + 8),
+      anxiety: Math.max(0, prev.anxiety - 5),
+      cleanliness: Math.min(100, prev.cleanliness + 50)
+    }));
+    setCoins(prev => prev + 1);
+    setCurrentPhrase("Limpo por fora, caos por dentro. Como sempre.");
+    setLastInteraction(Date.now());
   };
 
   // Sistema de tempo automatico - mudanças constantes nos níveis
@@ -172,12 +227,16 @@ const AnxiePet = () => {
         newStats.happiness = Math.max(0, prev.happiness - 0.5);
         newStats.energy = Math.max(0, prev.energy - 0.8);
         newStats.anxiety = Math.min(100, prev.anxiety + 0.3);
+        newStats.hunger = Math.min(100, prev.hunger + 1.2);
+        newStats.cleanliness = Math.max(0, prev.cleanliness - 0.8);
+        newStats.boredom = Math.min(100, prev.boredom + 1.5);
         
         // Acelera declínio se não houver interação
         if (timeSinceLastInteraction > 30000) { // 30 segundos
           newStats.happiness = Math.max(0, newStats.happiness - 1);
           newStats.anxiety = Math.min(100, newStats.anxiety + 1.5);
           newStats.energy = Math.max(0, newStats.energy - 1);
+          newStats.boredom = Math.min(100, newStats.boredom + 2);
         }
         
         // Flutuações aleatórias para ansiedade
@@ -256,7 +315,7 @@ const AnxiePet = () => {
         </div>
 
         {/* Status Bars with darker theme */}
-        <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
           <StatusBar 
             label="Felicidade" 
             value={stats.happiness} 
@@ -274,6 +333,24 @@ const AnxiePet = () => {
             value={stats.energy} 
             color="from-purple-600 to-blue-500"
             icon={<Zap className="w-4 h-4" />}
+          />
+          <StatusBar 
+            label="Fome" 
+            value={stats.hunger} 
+            color="from-yellow-600 to-orange-600"
+            icon={<Utensils className="w-4 h-4" />}
+          />
+          <StatusBar 
+            label="Limpeza" 
+            value={stats.cleanliness} 
+            color="from-blue-600 to-cyan-500"
+            icon={<Sparkles className="w-4 h-4" />}
+          />
+          <StatusBar 
+            label="Tédio" 
+            value={stats.boredom} 
+            color="from-gray-500 to-gray-700"
+            icon={<GamepadIcon className="w-4 h-4" />}
           />
         </div>
 
@@ -302,17 +379,33 @@ const AnxiePet = () => {
           </div>
         </div>
 
-        {/* Action Buttons with dark theme */}
+        {/* Action Buttons with new actions */}
         <div className="grid grid-cols-3 gap-3">
+          <ActionButton
+            label="🍔 Alimentar"
+            onClick={handleFeed}
+            gradient="from-yellow-600 to-orange-800"
+            cost={5}
+            disabled={coins < 5}
+          />
+          <ActionButton
+            label="🎮 Jogar"
+            onClick={handlePlay}
+            gradient="from-green-600 to-blue-800"
+          />
+          <ActionButton
+            label="🧼 Limpar"
+            onClick={handleClean}
+            gradient="from-cyan-600 to-blue-800"
+          />
+        </div>
+
+        {/* Secondary Actions */}
+        <div className="grid grid-cols-2 gap-3">
           <ActionButton
             label="💔 Afeto"
             onClick={handleCare}
             gradient="from-gray-600 to-gray-800"
-          />
-          <ActionButton
-            label="🖤 Vibe"
-            onClick={handlePlay}
-            gradient="from-purple-600 to-purple-800"
           />
           <ActionButton
             label="💀 Premium"
