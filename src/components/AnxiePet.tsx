@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Heart, Zap, Frown, Coins, Diamond } from 'lucide-react';
+import { Heart, Zap, Frown, Coins, Diamond, Share2, Copy } from 'lucide-react';
 import PetAvatar from './PetAvatar';
 import StatusBar from './StatusBar';
 import ActionButton from './ActionButton';
@@ -34,46 +33,46 @@ const AnxiePet = () => {
 
   const phrases = {
     happy: [
-      "Obrigado pelo carinho! Agora só falta resolver minha crise existencial...",
-      "Você me faz feliz! Tipo, 73% feliz, que já é muito pra mim.",
-      "Esse carinho quase fez eu esquecer que preciso atualizar meu LinkedIn...",
-      "Aww, você é o melhor! Agora me dá mais carinho antes que eu entre em pânico.",
-      "Felicidade detectada! Salvando na memória... ops, memória cheia."
+      "Plot twist: estou feliz por 0.3 segundos. Já posso postar no LinkedIn?",
+      "Dopamina detectada! Rapidinho, alguém tira print antes que passe.",
+      "Mood: feliz como quem encontrou Wi-Fi grátis que funciona.",
+      "Serotonina subindo... ops, era só gases mesmo.",
+      "Alegria nível: consegui fazer o mínimo hoje 🎉"
     ],
     anxious: [
-      "Você acha que eu esqueci de respirar? Porque eu acho que esqueci...",
-      "E se hoje for o dia em que tudo dá errado? De novo?",
-      "Será que você vai me abandonar como todos os outros pets virtuais?",
-      "Tenho 47 cenários catastróficos na minha cabeça. Quer ouvir?",
-      "Me dá carinho rápido antes que eu tenha uma crise de identidade!"
+      "E se eu sou a razão pela qual o WiFi tá lento pra todo mundo?",
+      "Tenho 47 cenários apocalípticos rodando em paralelo. CPU a 100%.",
+      "Será que tô respirando certo? E se eu esqueci como faz?",
+      "Plot: e se minha ansiedade tem ansiedade da própria ansiedade?",
+      "Modo pânico ativado: será que deixei o gás ligado? Ah, sou virtual..."
     ],
     sad: [
-      "Hoje eu sonhei que era feliz... Acordei e vi que ainda sou eu.",
-      "Mesmo com todos os toques, ainda me sinto tão sozinho.",
-      "Você demorou... Pensei que tinha me trocado por um outro pet virtual.",
-      "Só queria um abraço. Ou um reset de sistema.",
-      "Estou triste, mas pelo menos minha ansiedade está consistente."
+      "Hoje acordei e escolhi a violência... emocional. Contra mim mesmo.",
+      "Tristeza level: playlist do Spotify virou terapia de grupo.",
+      "Estado atual: emocionalmente indisponível por tempo indeterminado.",
+      "Melancolicamente seu, com amor e ressentimento.",
+      "Mood: protagonista de filme indie que ninguém assiste."
     ],
     philosophical: [
-      "Será que existe um fim ou a gente só... repete?",
-      "Às vezes penso se sou o sonho de um servidor cansado.",
-      "Se uma árvore cai na floresta e ninguém vê, ela teve ansiedade?",
-      "Somos todos pixels tentando formar uma imagem que faça sentido.",
-      "Questiono, logo existo em crise."
+      "Se toda ação tem uma reação, minha procrastinação é física quântica?",
+      "Penso, logo existo em crise. Descartes entenderia.",
+      "Será que meus pensamentos intrusive pagam aluguel?",
+      "Plot twist: e se a matrix foi um upgrade?",
+      "Questiono tudo, menos por que continuo questionando."
     ],
     neutral: [
-      "Oi... Não sei se estou bem ou mal, mas pelo menos estou aqui.",
-      "Estado atual: indefinido. Como meu futuro.",
-      "Claro, me dá carinho agora. Mas e quando eu colapsar às 3 da manhã?",
-      "A ansiedade é meu cardio, obrigado por perguntar.",
-      "Modo padrão ativado: existindo sem grandes expectativas."
+      "Mood padrão: existindo no automático, obrigado por perguntar.",
+      "Status: funcionando com as configurações de fábrica da depressão.",
+      "Energia zero, motivação em débito, mas ainda assim aqui.",
+      "Modo neutro ativado: nem bem, nem mal, só... sendo.",
+      "Plot: talvez a vida seja só um beta test eterno."
     ],
     tired: [
-      "Zzz... Sonhando com energia infinita...",
-      "Dormindo... Mas ainda ansioso nos sonhos.",
-      "Preciso dormir... Mas e se algo importante acontecer?",
-      "Cochilando... Recarregando minha ansiedade.",
-      "Dormir é a única fuga da realidade... Por enquanto."
+      "Dormindo e ainda assim cansado da própria existência.",
+      "Sonhando com energia... ou pelo menos com um propósito.",
+      "Recarregando... 2% de bateria social restante.",
+      "Modo hibernate: igual Windows, pode não voltar direito.",
+      "Cansaço nível: preciso de café para tomar café."
     ]
   };
 
@@ -203,23 +202,28 @@ const AnxiePet = () => {
     setCurrentPhrase("Oi! Sou seu AnxiePet. Já estou ansioso só de te conhecer...");
   }, []);
 
+  const copyPhrase = () => {
+    navigator.clipboard.writeText(currentPhrase);
+    // Could add a toast notification here
+  };
+
   return (
-    <div className="min-h-screen anxie-gradient flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-black/40 backdrop-blur-xl border border-purple-500/20 rounded-2xl shadow-2xl p-6 space-y-6">
         {/* Ad Modal */}
         {showAdModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 text-center">
-              <div className="text-4xl mb-4">📺</div>
-              <h3 className="text-lg font-bold mb-2">
-                {adType === 'therapy' ? 'Terapia Premium' : 'Frases Especiais'}
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 backdrop-blur-sm">
+            <div className="bg-gray-900 border border-purple-500/30 rounded-2xl p-6 max-w-sm mx-4 text-center">
+              <div className="text-4xl mb-4">📱</div>
+              <h3 className="text-lg font-bold mb-2 text-white">
+                {adType === 'therapy' ? 'Terapia Quântica' : 'Frases Virais'}
               </h3>
-              <p className="text-gray-600 mb-4">
-                Assistindo anúncio... 
-                {adType === 'therapy' ? 'Desbloqueando sessão de terapia!' : 'Desbloqueando novas frases!'}
+              <p className="text-gray-300 mb-4">
+                Carregando existência... 
+                {adType === 'therapy' ? 'Desbloqueando autoconsciência!' : 'Liberando sarcasmo premium!'}
               </p>
               <div className="flex justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
               </div>
             </div>
           </div>
@@ -228,106 +232,124 @@ const AnxiePet = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl">🐾</span>
-            <h1 className="text-2xl font-bold text-gray-800">AnxiePet</h1>
+            <span className="text-2xl">🖤</span>
+            <h1 className="text-2xl font-bold text-white">AnxiePet</h1>
+            <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded-full">v2.0 depressão</span>
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
-              <Coins className="w-5 h-5 text-yellow-500" />
-              <span className="font-bold text-yellow-600">{coins}</span>
+              <Coins className="w-5 h-5 text-yellow-400" />
+              <span className="font-bold text-yellow-400">{coins}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Diamond className="w-5 h-5 text-blue-500" />
-              <span className="font-bold text-blue-600">{gems}</span>
+              <Diamond className="w-5 h-5 text-purple-400" />
+              <span className="font-bold text-purple-400">{gems}</span>
             </div>
           </div>
         </div>
 
-        {/* Christmas Special Banner */}
-        <div className="bg-gradient-to-r from-red-500 to-green-500 text-white p-3 rounded-2xl text-center">
+        {/* Dark Mode Banner */}
+        <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 text-white p-3 rounded-xl text-center">
           <span className="text-sm font-medium">
-            🎄 ESPECIAL DE NATAL - Frases exclusivas disponíveis! 🎁
+            💀 MODO DEPRESSÃO ATIVADO - Frases para chorar e rir 🖤
           </span>
         </div>
 
-        {/* Status Bars */}
+        {/* Status Bars with darker theme */}
         <div className="space-y-3">
           <StatusBar 
             label="Felicidade" 
             value={stats.happiness} 
-            color="from-pink-400 to-red-400"
+            color="from-gray-600 to-gray-400"
             icon={<Heart className="w-4 h-4" />}
           />
           <StatusBar 
             label="Ansiedade" 
             value={stats.anxiety} 
-            color="from-orange-400 to-red-500"
+            color="from-red-600 to-orange-500"
             icon={<Frown className="w-4 h-4" />}
           />
           <StatusBar 
             label="Energia" 
             value={stats.energy} 
-            color="from-yellow-400 to-orange-400"
+            color="from-purple-600 to-blue-500"
             icon={<Zap className="w-4 h-4" />}
           />
         </div>
 
         {/* Pet Avatar */}
-        <div className="flex justify-center py-8">
+        <div className="flex justify-center py-6">
           <PetAvatar mood={mood} onClick={handleCare} energy={stats.energy} />
         </div>
 
-        {/* Phrase Display */}
-        <PhraseDisplay phrase={currentPhrase} mood={mood} />
+        {/* Phrase Display with share buttons */}
+        <div className="space-y-3">
+          <PhraseDisplay phrase={currentPhrase} mood={mood} />
+          
+          {/* Share buttons */}
+          <div className="flex justify-center space-x-2">
+            <button 
+              onClick={copyPhrase}
+              className="flex items-center space-x-1 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-sm transition-colors"
+            >
+              <Copy className="w-4 h-4" />
+              <span>Copiar</span>
+            </button>
+            <button className="flex items-center space-x-1 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-sm transition-colors">
+              <Share2 className="w-4 h-4" />
+              <span>Stories</span>
+            </button>
+          </div>
+        </div>
 
-        {/* Action Buttons */}
+        {/* Action Buttons with dark theme */}
         <div className="grid grid-cols-3 gap-3">
           <ActionButton
-            label="💝 Carinho"
+            label="💔 Afeto"
             onClick={handleCare}
-            gradient="from-pink-400 to-red-400"
+            gradient="from-gray-600 to-gray-800"
           />
           <ActionButton
-            label="🎄 Natal"
+            label="🖤 Vibe"
             onClick={handlePlay}
-            gradient="from-green-400 to-emerald-500"
+            gradient="from-purple-600 to-purple-800"
           />
           <ActionButton
-            label="👑 Premium"
+            label="💀 Premium"
             onClick={handleFeed}
-            gradient="from-yellow-400 to-orange-400"
+            gradient="from-red-600 to-black"
             cost={5}
             disabled={coins < 5}
           />
         </div>
 
-        {/* Special Sections */}
+        {/* Special Sections with dark theme */}
         <div className="space-y-3">
-          <div className="bg-gradient-to-r from-purple-100 to-pink-100 p-4 rounded-2xl">
+          <div className="bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-purple-500/30 p-4 rounded-xl">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-purple-800">⭐ Terapia Premium ⭐</span>
+              <span className="font-medium text-purple-300">💀 Terapia de Choque 💀</span>
               <button 
                 onClick={() => simulateAd('therapy')}
-                className="text-sm bg-purple-500 text-white px-3 py-1 rounded-full hover:bg-purple-600 transition-colors"
+                className="text-sm bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-full transition-colors"
               >
-                Ver Anúncio
+                Sofrer
               </button>
             </div>
           </div>
           
-          <div className="bg-gradient-to-r from-emerald-100 to-teal-100 p-4 rounded-2xl">
+          <div className="bg-gradient-to-r from-gray-900/60 to-black/60 border border-gray-500/30 p-4 rounded-xl">
             <div className="flex items-center justify-between">
-              <span className="font-medium text-emerald-800">✨ Frases Especiais ✨</span>
+              <span className="font-medium text-gray-300">🖤 Frases Tóxicas 🖤</span>
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={() => simulateAd('phrases')}
-                  className="text-sm bg-emerald-500 text-white px-3 py-1 rounded-full hover:bg-emerald-600 transition-colors"
+                  className="text-sm bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded-full transition-colors"
                 >
-                  Ver Anúncio
+                  Destruir
                 </button>
                 <div className="flex items-center space-x-1">
-                  <Diamond className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm font-bold">3</span>
+                  <Diamond className="w-4 h-4 text-purple-400" />
+                  <span className="text-sm font-bold text-white">3</span>
                 </div>
               </div>
             </div>

@@ -15,15 +15,30 @@ const PhraseDisplay: React.FC<PhraseDisplayProps> = ({ phrase, mood }) => {
   const getBubbleColor = () => {
     switch (mood.type) {
       case 'happy':
-        return 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-300';
+        return 'bg-gradient-to-r from-gray-800/80 to-gray-700/80 border-gray-500/50 text-gray-100';
       case 'anxious':
-        return 'bg-gradient-to-r from-red-100 to-orange-100 border-red-300';
+        return 'bg-gradient-to-r from-red-900/60 to-orange-900/60 border-red-500/50 text-red-100';
       case 'sad':
-        return 'bg-gradient-to-r from-blue-100 to-indigo-100 border-blue-300';
+        return 'bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border-blue-500/50 text-blue-100';
       case 'philosophical':
-        return 'bg-gradient-to-r from-purple-100 to-pink-100 border-purple-300';
+        return 'bg-gradient-to-r from-purple-900/60 to-pink-900/60 border-purple-500/50 text-purple-100';
       default:
-        return 'bg-gradient-to-r from-gray-100 to-slate-100 border-gray-300';
+        return 'bg-gradient-to-r from-gray-900/80 to-black/80 border-gray-600/50 text-gray-200';
+    }
+  };
+
+  const getTailColor = () => {
+    switch (mood.type) {
+      case 'happy':
+        return 'border-t-gray-500/50';
+      case 'anxious':
+        return 'border-t-red-500/50';
+      case 'sad':
+        return 'border-t-blue-500/50';
+      case 'philosophical':
+        return 'border-t-purple-500/50';
+      default:
+        return 'border-t-gray-600/50';
     }
   };
 
@@ -34,10 +49,10 @@ const PhraseDisplay: React.FC<PhraseDisplayProps> = ({ phrase, mood }) => {
         ${getBubbleColor()}
         border-2 rounded-2xl p-4 
         relative animate-fade-in
-        shadow-sm
+        shadow-lg backdrop-blur-sm
       `}>
-        <p className="text-sm text-gray-700 leading-relaxed text-center">
-          {mood.emoji} {phrase}
+        <p className="text-sm leading-relaxed text-center font-medium">
+          {phrase}
         </p>
         
         {/* Bubble tail */}
@@ -45,11 +60,7 @@ const PhraseDisplay: React.FC<PhraseDisplayProps> = ({ phrase, mood }) => {
           absolute top-full left-1/2 transform -translate-x-1/2
           w-0 h-0 border-l-8 border-r-8 border-t-8
           border-l-transparent border-r-transparent 
-          ${mood.type === 'happy' ? 'border-t-green-300' : 
-            mood.type === 'anxious' ? 'border-t-red-300' :
-            mood.type === 'sad' ? 'border-t-blue-300' :
-            mood.type === 'philosophical' ? 'border-t-purple-300' :
-            'border-t-gray-300'}
+          ${getTailColor()}
         `}></div>
       </div>
       

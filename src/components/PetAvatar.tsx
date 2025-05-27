@@ -9,61 +9,106 @@ interface Mood {
 interface PetAvatarProps {
   mood: Mood;
   onClick: () => void;
-  energy: number; // Add energy prop
+  energy: number;
 }
 
 const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick, energy }) => {
   const getAnimationClass = () => {
-    // If energy is very low, override with tired animation
     if (energy < 20) {
       return 'pet-tired';
     }
     
     switch (mood.type) {
       case 'happy':
-        return 'pet-happy';
+        return 'pet-sarcastic';
       case 'anxious':
         return 'pet-anxious';
       case 'sad':
-        return 'pet-sad';
+        return 'pet-depressed';
+      case 'philosophical':
+        return 'pet-thinking';
       default:
-        return 'pet-bounce';
+        return 'pet-dead-inside';
     }
   };
 
   const getPetEmoji = () => {
-    // If energy is very low, show tired face regardless of mood
     if (energy < 20) {
-      return '😴';
+      return '💀';
     }
     
-    // If energy is low but not critical, show tired version of current mood
     if (energy < 40) {
       switch (mood.type) {
         case 'happy':
-          return '😊';
+          return '😏';
         case 'anxious':
-          return '😰';
+          return '😵‍💫';
         case 'sad':
-          return '😢';
+          return '🖤';
         case 'philosophical':
-          return '🤔';
+          return '🤨';
         default:
-          return '😑'; // tired neutral
+          return '😑';
       }
     }
     
     switch (mood.type) {
       case 'happy':
-        return '😊';
+        return '😏'; // sarcastic smile
       case 'anxious':
-        return '😰';
+        return '😵‍💫'; // dizzy/overwhelmed
       case 'sad':
-        return '😢';
+        return '🖤'; // black heart
       case 'philosophical':
-        return '🤔';
+        return '🤨'; // raised eyebrow
       default:
-        return '😐';
+        return '😐'; // dead inside
+    }
+  };
+
+  const getFloatingElements = () => {
+    if (energy < 20) {
+      return (
+        <>
+          <div className="absolute -top-3 -left-2 text-xs floating animation-delay-100">💀</div>
+          <div className="absolute -top-2 -right-3 text-xs floating animation-delay-300">⚰️</div>
+        </>
+      );
+    }
+
+    switch (mood.type) {
+      case 'anxious':
+        return (
+          <>
+            <div className="absolute -top-2 -left-2 text-xs floating animation-delay-100">📱</div>
+            <div className="absolute -top-1 -right-3 text-xs floating animation-delay-300">💊</div>
+            <div className="absolute -bottom-2 -left-3 text-xs floating animation-delay-500">☕</div>
+          </>
+        );
+      case 'happy':
+        return (
+          <>
+            <div className="absolute -top-3 -left-1 text-sm floating animation-delay-200">💸</div>
+            <div className="absolute -top-2 -right-2 text-sm floating animation-delay-400">📈</div>
+            <div className="absolute -bottom-3 right-0 text-sm floating animation-delay-600">🎭</div>
+          </>
+        );
+      case 'sad':
+        return (
+          <>
+            <div className="absolute top-8 left-6 text-xs">🖤</div>
+            <div className="absolute top-8 right-6 text-xs">💔</div>
+          </>
+        );
+      case 'philosophical':
+        return (
+          <>
+            <div className="absolute -top-2 -left-2 text-xs floating animation-delay-100">🧠</div>
+            <div className="absolute -top-1 -right-3 text-xs floating animation-delay-300">💭</div>
+          </>
+        );
+      default:
+        return null;
     }
   };
 
@@ -73,59 +118,28 @@ const PetAvatar: React.FC<PetAvatarProps> = ({ mood, onClick, energy }) => {
       className={`
         relative cursor-pointer select-none
         w-32 h-32 rounded-full 
-        bg-gradient-to-br from-yellow-200 via-orange-200 to-orange-300
+        bg-gradient-to-br from-gray-800 via-gray-900 to-black
+        border-2 border-purple-500/30
         flex items-center justify-center
-        transition-all duration-300 hover:scale-110
-        pulse-glow
+        transition-all duration-300 hover:scale-110 hover:border-purple-400/50
+        shadow-lg shadow-purple-500/20
         ${getAnimationClass()}
-        ${energy < 20 ? 'opacity-75' : ''}
+        ${energy < 20 ? 'opacity-60' : ''}
       `}
     >
       {/* Pet Face */}
-      <div className="text-6xl relative">
+      <div className="text-6xl relative filter drop-shadow-lg">
         {getPetEmoji()}
         
-        {/* Energy indicators */}
-        {energy < 20 && (
-          <>
-            <div className="absolute -top-2 -left-2 text-xs">💤</div>
-            <div className="absolute -top-1 -right-3 text-xs">😴</div>
-          </>
-        )}
-        
-        {/* Floating particles for anxiety */}
-        {mood.type === 'anxious' && energy >= 20 && (
-          <>
-            <div className="absolute -top-2 -left-2 text-xs floating animation-delay-100">💭</div>
-            <div className="absolute -top-1 -right-3 text-xs floating animation-delay-300">😵‍💫</div>
-            <div className="absolute -bottom-2 -left-3 text-xs floating animation-delay-500">💔</div>
-          </>
-        )}
-        
-        {/* Hearts for happiness */}
-        {mood.type === 'happy' && energy >= 20 && (
-          <>
-            <div className="absolute -top-3 -left-1 text-sm floating animation-delay-200">💖</div>
-            <div className="absolute -top-2 -right-2 text-sm floating animation-delay-400">✨</div>
-            <div className="absolute -bottom-3 right-0 text-sm floating animation-delay-600">🌟</div>
-          </>
-        )}
-
-        {/* Tears for sadness */}
-        {mood.type === 'sad' && energy >= 20 && (
-          <>
-            <div className="absolute top-8 left-6 text-xs">💧</div>
-            <div className="absolute top-8 right-6 text-xs">💧</div>
-          </>
-        )}
+        {getFloatingElements()}
       </div>
       
-      {/* Glow effect */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-white/20 to-transparent"></div>
+      {/* Dark glow effect */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent via-purple-500/10 to-transparent"></div>
       
       {/* Click indicator */}
-      <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-white bg-black/50 px-2 py-1 rounded-full opacity-75">
-        {energy < 20 ? 'Está dormindo...' : 'Toque para carinho'}
+      <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 bg-black/70 border border-purple-500/30 px-3 py-1 rounded-full">
+        {energy < 20 ? 'Morto por dentro...' : 'Toque para trauma'}
       </div>
     </div>
   );

@@ -107,6 +107,26 @@
     animation: petSad 3s ease-in-out infinite;
   }
   
+  .pet-tired {
+    animation: petTired 4s ease-in-out infinite;
+  }
+  
+  .pet-sarcastic {
+    animation: petSarcastic 2s ease-in-out infinite;
+  }
+  
+  .pet-depressed {
+    animation: petDepressed 4s ease-in-out infinite;
+  }
+  
+  .pet-thinking {
+    animation: petThinking 3s ease-in-out infinite;
+  }
+  
+  .pet-dead-inside {
+    animation: petDeadInside 5s ease-in-out infinite;
+  }
+  
   .floating {
     animation: floating 3s ease-in-out infinite;
   }
@@ -155,6 +175,61 @@
   }
 }
 
+@keyframes petTired {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(0.95) rotate(-2deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes petSarcastic {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(2deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(-2deg);
+  }
+}
+
+@keyframes petDepressed {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes petThinking {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(3deg) scale(1.02);
+  }
+  75% {
+    transform: rotate(-3deg) scale(1.02);
+  }
+}
+
+@keyframes petDeadInside {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(0.99);
+    opacity: 0.6;
+  }
+}
+
 @keyframes floating {
   0%, 100% {
     transform: translateY(0px);
@@ -166,9 +241,9 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
   }
   50% {
-    box-shadow: 0 0 40px rgba(102, 126, 234, 0.8);
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.8);
   }
 }
