@@ -2,29 +2,29 @@
 import React from 'react';
 
 interface StatusBarProps {
-  label: string;
+  symbol: string;
   value: number;
   color: string;
-  icon: React.ReactNode;
+  maxWidth?: boolean;
 }
 
-const StatusBar: React.FC<StatusBarProps> = ({ label, value, color, icon }) => {
+const StatusBar: React.FC<StatusBarProps> = ({ symbol, value, color, maxWidth = false }) => {
+  // Arredondar valores para não sair da tela
+  const displayValue = Math.round(value);
+  
   return (
-    <div className="space-y-2">
+    <div className={`space-y-1 ${maxWidth ? 'max-w-[80px]' : ''}`}>
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          {icon}
-          <span className="text-sm font-medium text-gray-700">{label}</span>
-        </div>
-        <span className="text-sm font-bold text-gray-600">{value}</span>
+        <span className="text-lg">{symbol}</span>
+        <span className="text-xs font-bold text-gray-300 min-w-[24px] text-right">{displayValue}</span>
       </div>
       
-      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+      <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden">
         <div
           className={`h-full bg-gradient-to-r ${color} transition-all duration-500 ease-out rounded-full relative`}
-          style={{ width: `${value}%` }}
+          style={{ width: `${Math.min(100, displayValue)}%` }}
         >
-          <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+          <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
         </div>
       </div>
     </div>

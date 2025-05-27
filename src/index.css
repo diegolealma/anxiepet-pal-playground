@@ -91,159 +91,222 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   
-  .pet-bounce {
-    animation: petBounce 2s ease-in-out infinite;
-  }
+  /* Animações originais */
+  .pet-bounce { animation: petBounce 2s ease-in-out infinite; }
+  .pet-anxious { animation: petShake 0.5s ease-in-out infinite; }
+  .pet-happy { animation: petHappy 1s ease-in-out infinite; }
+  .pet-sad { animation: petSad 3s ease-in-out infinite; }
+  .pet-tired { animation: petTired 4s ease-in-out infinite; }
+  .pet-sarcastic { animation: petSarcastic 2s ease-in-out infinite; }
+  .pet-depressed { animation: petDepressed 4s ease-in-out infinite; }
+  .pet-thinking { animation: petThinking 3s ease-in-out infinite; }
+  .pet-dead-inside { animation: petDeadInside 5s ease-in-out infinite; }
   
-  .pet-anxious {
-    animation: petShake 0.5s ease-in-out infinite;
-  }
+  /* Novas animações avançadas */
+  .pet-dying { animation: petDying 2s ease-in-out infinite; }
+  .pet-panic { animation: petPanic 0.3s ease-in-out infinite; }
+  .pet-starving { animation: petStarving 1s ease-in-out infinite; }
+  .pet-bored-to-death { animation: petBoredToDeath 6s ease-in-out infinite; }
+  .pet-disgusted { animation: petDisgusted 1.5s ease-in-out infinite; }
+  .pet-evil-happy { animation: petEvilHappy 1.2s ease-in-out infinite; }
+  .pet-anxious-shake { animation: petAnxiousShake 0.4s ease-in-out infinite; }
+  .pet-depressed-slow { animation: petDepressedSlow 5s ease-in-out infinite; }
+  .pet-tired-sway { animation: petTiredSway 3s ease-in-out infinite; }
+  .pet-sarcastic-bounce { animation: petSarcasticBounce 2s ease-in-out infinite; }
+  .pet-nervous-twitch { animation: petNervousTwitch 0.8s ease-in-out infinite; }
+  .pet-melancholy { animation: petMelancholy 4s ease-in-out infinite; }
+  .pet-deep-thinking { animation: petDeepThinking 3.5s ease-in-out infinite; }
+  .pet-existential-crisis { animation: petExistentialCrisis 6s ease-in-out infinite; }
   
-  .pet-happy {
-    animation: petHappy 1s ease-in-out infinite;
-  }
+  /* Animações para elementos flutuantes */
+  .floating { animation: floating 3s ease-in-out infinite; }
+  .rapid-float { animation: rapidFloat 1s ease-in-out infinite; }
+  .bouncing { animation: bouncing 0.8s ease-in-out infinite; }
+  .slow-drift { animation: slowDrift 4s ease-in-out infinite; }
+  .wiggle { animation: wiggle 0.6s ease-in-out infinite; }
+  .evil-glow { animation: evilGlow 2s ease-in-out infinite; }
+  .deep-thought { animation: deepThought 3s ease-in-out infinite; }
   
-  .pet-sad {
-    animation: petSad 3s ease-in-out infinite;
-  }
-  
-  .pet-tired {
-    animation: petTired 4s ease-in-out infinite;
-  }
-  
-  .pet-sarcastic {
-    animation: petSarcastic 2s ease-in-out infinite;
-  }
-  
-  .pet-depressed {
-    animation: petDepressed 4s ease-in-out infinite;
-  }
-  
-  .pet-thinking {
-    animation: petThinking 3s ease-in-out infinite;
-  }
-  
-  .pet-dead-inside {
-    animation: petDeadInside 5s ease-in-out infinite;
-  }
-  
-  .floating {
-    animation: floating 3s ease-in-out infinite;
-  }
-  
-  .pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
-  }
+  .pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
 }
 
+/* Animações originais */
 @keyframes petBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes petShake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-3px);
-  }
-  75% {
-    transform: translateX(3px);
-  }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
 @keyframes petHappy {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.1) rotate(5deg);
-  }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
 }
 
 @keyframes petSad {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(5px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
 }
 
 @keyframes petTired {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(0.95) rotate(-2deg);
-    opacity: 0.4;
-  }
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+  50% { transform: scale(0.95) rotate(-2deg); opacity: 0.4; }
 }
 
 @keyframes petSarcastic {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  25% {
-    transform: scale(1.05) rotate(2deg);
-  }
-  75% {
-    transform: scale(1.05) rotate(-2deg);
-  }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(2deg); }
+  75% { transform: scale(1.05) rotate(-2deg); }
 }
 
 @keyframes petDepressed {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(8px) scale(0.98);
-  }
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(8px) scale(0.98); }
 }
 
 @keyframes petThinking {
-  0%, 100% {
-    transform: rotate(0deg) scale(1);
-  }
-  25% {
-    transform: rotate(3deg) scale(1.02);
-  }
-  75% {
-    transform: rotate(-3deg) scale(1.02);
-  }
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(3deg) scale(1.02); }
+  75% { transform: rotate(-3deg) scale(1.02); }
 }
 
 @keyframes petDeadInside {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(0.99);
-    opacity: 0.6;
-  }
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(0.99); opacity: 0.6; }
 }
 
+/* Novas animações avançadas */
+@keyframes petDying {
+  0%, 100% { transform: scale(0.9) rotate(-5deg); opacity: 0.3; }
+  50% { transform: scale(0.85) rotate(5deg); opacity: 0.2; }
+}
+
+@keyframes petPanic {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  25% { transform: translateX(-4px) translateY(-2px) scale(1.1); }
+  50% { transform: translateX(4px) translateY(2px) scale(0.9); }
+  75% { transform: translateX(-2px) translateY(-4px) scale(1.05); }
+}
+
+@keyframes petStarving {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-3deg); }
+  50% { transform: scale(0.9) rotate(3deg); }
+  75% { transform: scale(1.05) rotate(-1deg); }
+}
+
+@keyframes petBoredToDeath {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  33% { transform: scale(0.95) rotate(-1deg); opacity: 0.5; }
+  66% { transform: scale(0.98) rotate(1deg); opacity: 0.6; }
+}
+
+@keyframes petDisgusted {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(0.95) rotate(-5deg); }
+  75% { transform: scale(0.95) rotate(5deg); }
+}
+
+@keyframes petEvilHappy {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(3deg); }
+  50% { transform: scale(1.05) rotate(-2deg); }
+  75% { transform: scale(1.08) rotate(1deg); }
+}
+
+@keyframes petAnxiousShake {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-2px) translateY(-1px); }
+  50% { transform: translateX(2px) translateY(1px); }
+  75% { transform: translateX(-1px) translateY(-2px); }
+}
+
+@keyframes petDepressedSlow {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+  50% { transform: translateY(10px) scale(0.95); opacity: 0.6; }
+}
+
+@keyframes petTiredSway {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  33% { transform: rotate(-2deg) scale(0.98); }
+  66% { transform: rotate(2deg) scale(0.98); }
+}
+
+@keyframes petSarcasticBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes petNervousTwitch {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  20% { transform: scale(1.02) rotate(1deg); }
+  40% { transform: scale(0.98) rotate(-1deg); }
+  60% { transform: scale(1.01) rotate(0.5deg); }
+  80% { transform: scale(0.99) rotate(-0.5deg); }
+}
+
+@keyframes petMelancholy {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+  50% { transform: translateY(6px) scale(0.97); opacity: 0.7; }
+}
+
+@keyframes petDeepThinking {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(2deg) scale(1.01); }
+  50% { transform: rotate(-3deg) scale(1.02); }
+  75% { transform: rotate(1deg) scale(1.01); }
+}
+
+@keyframes petExistentialCrisis {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  20% { transform: scale(0.98) rotate(-1deg); opacity: 0.75; }
+  40% { transform: scale(1.01) rotate(1deg); opacity: 0.85; }
+  60% { transform: scale(0.99) rotate(-0.5deg); opacity: 0.7; }
+  80% { transform: scale(1.005) rotate(0.5deg); opacity: 0.8; }
+}
+
+/* Animações para elementos flutuantes */
 @keyframes floating {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes rapidFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+@keyframes bouncing {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) scale(1.1); }
+}
+
+@keyframes slowDrift {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  50% { transform: translateY(-8px) translateX(2px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes evilGlow {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(1.3); }
+}
+
+@keyframes deepThought {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.8; }
+  50% { transform: translateY(-10px) scale(1.05); opacity: 1; }
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(168, 85, 247, 0.8);
-  }
+  0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
 }

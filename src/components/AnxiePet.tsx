@@ -314,49 +314,58 @@ const AnxiePet = () => {
           </span>
         </div>
 
-        {/* Status Bars with darker theme */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Status Bars with symbols */}
+        <div className="grid grid-cols-3 gap-2">
           <StatusBar 
-            label="Felicidade" 
+            symbol="😊" 
             value={stats.happiness} 
             color="from-gray-600 to-gray-400"
-            icon={<Heart className="w-4 h-4" />}
+            maxWidth={true}
           />
           <StatusBar 
-            label="Ansiedade" 
+            symbol="😰" 
             value={stats.anxiety} 
             color="from-red-600 to-orange-500"
-            icon={<Frown className="w-4 h-4" />}
+            maxWidth={true}
           />
           <StatusBar 
-            label="Energia" 
+            symbol="⚡" 
             value={stats.energy} 
             color="from-purple-600 to-blue-500"
-            icon={<Zap className="w-4 h-4" />}
+            maxWidth={true}
           />
           <StatusBar 
-            label="Fome" 
+            symbol="🍔" 
             value={stats.hunger} 
             color="from-yellow-600 to-orange-600"
-            icon={<Utensils className="w-4 h-4" />}
+            maxWidth={true}
           />
           <StatusBar 
-            label="Limpeza" 
+            symbol="🧼" 
             value={stats.cleanliness} 
             color="from-blue-600 to-cyan-500"
-            icon={<Sparkles className="w-4 h-4" />}
+            maxWidth={true}
           />
           <StatusBar 
-            label="Tédio" 
+            symbol="😴" 
             value={stats.boredom} 
             color="from-gray-500 to-gray-700"
-            icon={<GamepadIcon className="w-4 h-4" />}
+            maxWidth={true}
           />
         </div>
 
-        {/* Pet Avatar */}
+        {/* Pet Avatar with all stats */}
         <div className="flex justify-center py-6">
-          <PetAvatar mood={mood} onClick={handleCare} energy={stats.energy} />
+          <PetAvatar 
+            mood={mood} 
+            onClick={handleCare} 
+            energy={stats.energy}
+            happiness={stats.happiness}
+            anxiety={stats.anxiety}
+            hunger={stats.hunger}
+            cleanliness={stats.cleanliness}
+            boredom={stats.boredom}
+          />
         </div>
 
         {/* Phrase Display with share buttons */}
